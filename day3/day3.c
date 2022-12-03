@@ -87,7 +87,7 @@ cntbdg(str, str2, str3)
 register const char *str, *str2, *str3;
 {
     register i;
-    auto fmap[26 * 2], fmap2[26 * 2], fmap3[26 * 3];
+    auto fmap[26 * 2], fmap2[26 * 2], fmap3[26 * 2];
 
     cntfmap(str, fmap);
     cntfmap(str2, fmap2);
