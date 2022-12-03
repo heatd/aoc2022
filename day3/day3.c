@@ -51,7 +51,6 @@ register const char *str;
 main(argc, argv, envp)
 char **argv, **envp;
 {
-    char A, X;
     char buf[128];
     register score;
 
@@ -107,7 +106,6 @@ register const char *str, *str2, *str3;
 main(argc, argv, envp)
 char **argv, **envp;
 {
-    char A, X;
     char buf[128], buf2[128], buf3[128];
     register score;
 
