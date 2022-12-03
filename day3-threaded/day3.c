@@ -115,14 +115,7 @@ char **argv, **envp;
 
         struct wq *a = &wq[id % 8];
         pthread_spin_lock(&a->worklock);
-        if(!a->work)
-            a->work = wo;
-        else
-        {
-            struct work *b = a->work;
-            while (b->nextwq) b = b->nextwq;
-            b->nextwq = wo;
-        }
+        wo->nextwq = a->work, a->work = wo;
         pthread_spin_unlock(&a->worklock);
         sem_post(&a->sem);
     }
