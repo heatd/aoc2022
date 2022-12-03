@@ -5,40 +5,38 @@
 #include <stdlib.h>
 #include <err.h>
 #include <semaphore.h>
+#include <stdint.h>
 
-void
-cntfmap(str, fmap)
+typedef uint64_t u64;
+
+u64
+cntfmap(str)
 register const char *str;
-int *fmap;
 {
+    u64 fmap;
     register len, i;
     len = strlen(str);
     if (str[len - 1] == '\n')
         len--;
-    for (i = 0; i < 26 * 2; ++i)
-        fmap[i] = 0;
+    fmap = 0;
     for (i = 0; i < len; ++i)
-        fmap[str[i] >= 'a' ? str[i] - 'a' : (str[i] - 'A' + 26)]++;
+        fmap |= (1UL << (str[i] >= 'a' ? str[i] - 'a' : (str[i] - 'A' + 26)));
+    return fmap;
 }
 
 cntbdg(str, str2, str3)
 register const char *str, *str2, *str3;
 {
     register i;
-    auto fmap[26 * 2], fmap2[26 * 2], fmap3[26 * 2];
+    u64 fmap, fmap2, fmap3, total;
 
-    cntfmap(str, fmap);
-    cntfmap(str2, fmap2);
-    cntfmap(str3, fmap3);
+    fmap = cntfmap(str);
+    fmap2 = cntfmap(str2);
+    fmap3 = cntfmap(str3);
 
-    for (i = 0; i < 26 * 2; ++i)
-    {
-        if (fmap[i] && fmap2[i] && fmap3[i])
-            return i + 1;
-    }
+    total = fmap & fmap2 & fmap3;
 
-    fprintf(stderr, "what?? bad input\n");
-    exit(1);
+    return __builtin_ffsll(total);
 }
 
 struct work
